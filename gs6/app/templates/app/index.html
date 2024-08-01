@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>web socket enjoying</title>
+</head>
+<body>
+     <h1>Count page</h1>
+     <h2 id="ct"></h2>
+     <ul id="ul">
+         
+     </ul>
+     <script>
+          // // var ws = new WebSocket("ws://127.0.0.1:8000/ws/sc/")
+          // // ws.onopen = function(){
+          // //      console.log("websocket connection is open...",event)
+          // //      // client se server ko
+          // //      ws.send('hi, msg from client')
+          // // }
+          // // ws.onmessage=function(event){
+          // //      console.log("msg received from server ...",event)
+          // // }
+          // // ws.onerror=function(event){
+          // //      console.log("websocket error ...",event)
+          // // }
+          // // ws.onclose=function(event){
+          // //      console.log("websocket connection closed ...",event)
+          // // }
+          // ws.addEventListener('open',(event)=>{
+          //      console.log("websocket connection is open...",event)
+          //      // client se server ko
+          //      ws.send('hi, msg from client to  server')
+          // })
+          // ws.addEventListener('message',(event)=>{
+          //      console.log("msg received from server ...",event)
+          // })
+          // ws.addEventListener('error',(event)=>{
+          //      console.log("websocket connection is error...",event)
+              
+          // })
+          // ws.addEventListener('close',(event)=>{
+          //      console.log("websocket connection is close...",event)
+             
+          // })
+
+           var ws = new WebSocket("ws://127.0.0.1:8000/ws/sc/")
+          ws.onopen = function(){
+               console.log("websocket connection is open...",event)
+               // client se server ko
+               ws.send('Hi, msg from client to server...')
+          }
+          // ws.onmessage=function(event){
+          //    console.log("EVENT...",event);
+          //    console.log('msg Received from server...',event.data);
+          //    document.getElementById("ct").innerText = event.data
+
+          // }
+
+          ws.onmessage=function(event){
+             console.log("EVENT...",event);
+             console.log('msg Received from server...',event.data);
+             console.log("type of event data ",typeof(event.data));
+             //    to convert string into object
+             var data=JSON.parse(event.data)
+             console.log('parsed data',data);
+             console.log('type of parsed data',typeof(data));
+             document.getElementById("ct").innerText = data.count
+
+          }
+          ws.onerror=function(event){
+               console.log("websocket error ...",event)
+          }
+          ws.onclose=function(event){
+               console.log("websocket connection closed ...",event)
+          }
+
+     </script>
+</body>
+</html>
