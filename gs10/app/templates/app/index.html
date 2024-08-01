@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>chat App</title>
+</head>
+<body>
+     <h1>Group Name -- {{groupname}}</h1>
+     <textarea name="chat-log" id="chat-log" cols="100" rows="20">
+          {% if chats %}
+          {% for chat in chats %}
+          {{chat.content}}
+          {% endfor %}
+          {% endif %}
+     </textarea>
+     <br>
+     <input type="text" name="" id="chat-message-input" size="100"><br>
+
+     <input type="button" value="Send" id="chat-message-submit">
+     
+     {{groupname|json_script:'group-name'}}
+     <script>
+          // convert object to str
+          const groupName=JSON.parse(document.getElementById('group-name').textContent)
+          console.log(groupName)
+
+        // var ws = new WebSocket('ws://127.0.0.1:8000/ws/ac/')
+          var ws = new WebSocket(
+               'ws://'+ window.location.host + '/ws/ac/'+ groupName + '/')
+          // object
+          // console.log(typeof ws);
+          ws.onopen = function(){
+               console.log("websocket Connection open ..");
+               // ws.send("hi from client to server")
+          }
+          // server se data receive ho
+          ws.onmessage = function(event){
+               console.log(" msg received from data ..",event);
+               // type str
+               console.log("msg received from data ..",event.data);
+               // to js object
+               const data = JSON.parse(event.data)  // string to js object
+               console.log("type of parsed data ",data)
+               console.log("actual data ",data.msg)
+               document.querySelector("#chat-log").value +=(data.msg+ "\n")
+          }
+          ws.onerror = function(){
+               console.log("websocket error..");
+          }
+          ws.onclose = function(){
+               console.log("websocket Connection closed ..");
+          }
+
+          document.getElementById('chat-message-submit').onclick=function(){
+               const msgInputDom=document.getElementById('chat-message-input')
+               const message=msgInputDom.value
+               console.log("type of msg :",typeof message)
+               // to convert into string
+               ws.send(JSON.stringify({
+                    'msg':message
+               }))
+               msgInputDom.value=""
+          }
+     </script>
+</body>
+</html>
