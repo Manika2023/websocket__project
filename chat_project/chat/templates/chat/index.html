@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Rooms</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <form action="" method="post">
+        {% csrf_token %}
+        <h2>Enter a Chat Room</h2>
+        <input type="text" id="room-name-input" name="room-name-input" placeholder="Room Name">
+        <button type="submit">Go</button>
+    </form>
+</div>
+
+
+</body>
+</html>
